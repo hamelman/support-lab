@@ -16,16 +16,23 @@ header {
 }
 
 header img {
-  height: auto;
   max-height: 80px;
+  max-width: 200px;
   width: auto;
+  height: auto;
   display: block;
   margin: 0;
 }
 
-nav {
-  margin-left: auto;
+
+/* Responsive tweak for smaller screens */
+@media (max-width: 500px) {
+  header img {
+    max-height: 60px;
+    max-width: 150px;
+  }
 }
+
 
 nav a {
   margin-left: 1.5rem;
