@@ -200,3 +200,99 @@
     #bot-body {
       display: block;
     }
+
+    /* ===== Page-Specific Styles ===== */
+
+/* Case Studies Layout: Stack Cards Vertically */
+body.case-studies .case-studies {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem 1rem;
+  gap: 1rem;
+}
+
+body.case-studies .card {
+  width: 100%;
+}
+
+/* ===== About Page Styles ===== */
+
+body.about main {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  line-height: 1.7;
+}
+
+body.about h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+body.about h2 {
+  margin-top: 2.5rem;
+  font-size: 1.5rem;
+}
+
+body.about ul {
+  padding-left: 1.2rem;
+}
+
+body.about li {
+  margin-bottom: 0.4rem;
+}
+
+/* ===== Contact Page Styles ===== */
+
+body.contact main {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  line-height: 1.6;
+}
+
+body.contact form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+body.contact input,
+body.contact textarea {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  width: 100%;
+  font-family: inherit;
+}
+
+body.contact button {
+  background-color: #0077cc;
+  color: white;
+  padding: 0.75rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+body.contact button:hover {
+  background-color: #005fa3;
+}
+
+body.contact label {
+  font-weight: 500;
+}
+
+body.contact .success {
+  color: green;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
