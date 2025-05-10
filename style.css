@@ -16,7 +16,8 @@ header {
 }
 
 header img {
-  height: clamp(50px, 8vw, 100px);
+  height: auto;
+  max-height: 80px;
   width: auto;
   display: block;
   margin: 0;
