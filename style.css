@@ -92,6 +92,12 @@ nav a {
   border: 1px solid #ddd;
   width: 300px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .card h3 {
@@ -119,7 +125,14 @@ nav a {
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
+
+.cta a:hover {
+  background: #005fa3;
+  transform: scale(1.05);
+}
+
 
 /* ===== Footer ===== */
 footer {
@@ -325,3 +338,17 @@ body.contact .success {
   margin-top: 0.5rem;
   font-weight: bold;
 }
+
+
+/* Scroll Reveal Animation */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
