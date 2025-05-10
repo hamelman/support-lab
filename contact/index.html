@@ -51,17 +51,15 @@
     document.getElementById("contactForm").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const message = document.getElementById("message").value.trim();
+      const form = document.getElementById("contactForm");
+      const formData = new FormData(form);
 
       fetch("https://script.google.com/macros/s/AKfycbyDWaoCr1WdQ1s4x8aeeFXzqbaxUjZbhMhSG2gKfuEb8wifc2rP_cL1KmUpUmgZbFit/exec", {
         method: "POST",
-        body: JSON.stringify({ name, email, message }),
-        headers: { "Content-Type": "application/json" }
+        body: formData
       }).then(() => {
         document.getElementById("formStatus").style.display = "block";
-        document.getElementById("contactForm").reset();
+        form.reset();
       }).catch(err => {
         alert("There was an error sending your message.");
         console.error(err);
