@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About – Support Lab</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f4f7f9;
+      color: #222;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 2px solid #ddd;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+    }
+
+    header img {
+      max-width: 100%;
+      height: auto;
+      width: 100px;
+      margin-right: 1rem;
+    }
+
+    nav {
+      margin-left: auto;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 500;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      line-height: 1.7;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      margin-top: 2.5rem;
+      font-size: 1.5rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #0077cc;
+    }
+
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      padding-bottom: 2rem;
+    }
+  </style>
+
+  <!-- 📈 Google Sheets Visit Tracking -->
+  <script>
+    (function () {
+      const referrer = document.referrer ? new URL(document.referrer).pathname.replace("/", "") || "direct" : "direct";
+      const path = window.location.pathname;
+
+      fetch("https://script.google.com/macros/s/AKfycbxU4kMAVoqARLhlwAKnh15H4nCFu0BsxX3eCm1s4IodYBEEhItHvqV_1uaieYnhg5nA/exec" +
+        `?ip=anon&ref=${encodeURIComponent(referrer)}&path=${encodeURIComponent(path)}`)
+        .then(() => console.log("📊 Visit logged"))
+        .catch(err => console.warn("Tracking error:", err));
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Support Lab Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="case-studies.html">Case Studies</a>
+      <a href="about.html" class="highlight">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>💡 About Sean</h1>
+    <p><span class="highlight">Building support systems that work better — for customers <em>and</em> teams.</span></p>
+
+    <p>I'm Sean, a customer experience leader, builder, and consultant with a track record of launching high-impact support tools, teams, and operations. Over the past 10+ years, I’ve worked across startups and scaling organizations — from building global contact centers to redesigning support workflows with automation, data, and a human-first mindset.</p>
+
+    <p>I’ve led teams through hypergrowth, platform transitions, and AI transformations. I believe great support doesn’t just solve problems — it builds trust, loyalty, and scalable infrastructure for the business.</p>
+
+    <h2>What I Do</h2>
+    <ul>
+      <li><strong>Operational Strategy</strong> – Scalable support systems, Zendesk architecture, AI-assisted workflows</li>
+      <li><strong>Team Leadership</strong> – Hiring, coaching, and growing high-performing global support teams</li>
+      <li><strong>CX Automation</strong> – No-code tools, AI evaluation, and automation that enhances teams</li>
+      <li><strong>Hands-On Consulting</strong> – I build solutions, not just recommendations</li>
+    </ul>
+
+    <h2>A Bit More Human</h2>
+    <p>I’ve been the person rebuilding a support center with limited tools, the one explaining AI metrics to the exec team, and the one leading a project from pitch to postmortem. When I’m not in ops mode, I’m usually:</p>
+    <ul>
+      <li>Experimenting with gluten-free baking that <em>actually</em> tastes good</li>
+      <li>Exploring international cuisine with my partner Erin</li>
+      <li>Helping my son wire his first electric guitar</li>
+      <li>Building tech solutions that make work (and life) a bit less chaotic</li>
+    </ul>
+  </main>
+
+  <footer>
+    &copy; 2025 Support Lab. All rights reserved.
+  </footer>
+</body>
+</html>

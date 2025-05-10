@@ -2,28 +2,153 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Case Studies – Support Lab</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f4f7f9;
+      color: #222;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 2px solid #ddd;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+    }
+
+    header img {
+      max-width: 100%;
+      height: auto;
+      width: 100px;
+      margin-right: 1rem;
+    }
+
+    nav {
+      margin-left: auto;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 500;
+    }
+
+    .hero {
+      padding: 3rem 2rem;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .case-studies {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      width: 350px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #0077cc;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      padding: 2rem;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-  <h1>Case Studies</h1>
-  <p>Here are a few examples of real-world problems I've helped solve in customer support operations.</p>
 
-  <ul>
-    <li><a href="#">Expatrio Scheduler – Low/No-Cost Solution to Support Global Ops</a></li>
-    <li><a href="#">Walk-In Support Flow – Secure & Seamless Onboarding Experience</a></li>
-    <li><a href="#">[Placeholder for Future Project]</a></li>
-  </ul>
+  <header>
+    <img src="logo.png" alt="Support Lab logo" />
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case Studies</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
 
-  <p><a href="../">← Back to home</a></p>
+  <section class="hero">
+    <h2>Case Studies in Action</h2>
+    <p>I build teams, design tools, and craft workflows that transform customer support operations. Here’s what happens when creativity meets execution.</p>
+  </section>
 
-  <img
-  src="https://script.google.com/macros/s/AKfycbxU4kMAVoqARLhlwAKnh15H4nCFu0BsxX3eCm1s4IodYBEEhItHvqV_1uaieYnhg5nA/exec?ref=case-studies&path=/case-studies&ip=anon"
-  width="1"
-  height="1"
-  style="display: none;"
-  alt=""
->
+  <section class="case-studies">
+
+    <div class="card">
+      <h3>🌍 Automated Global Scheduling: Innovation without Cost</h3>
+      <p>Built and deployed a custom scheduling tool using Google Sheets and Apps Script, replacing costly vendor solutions with an elegant, scalable system that automated staffing across global customer support teams. Resulted in significant cost savings, improved shift coverage, and enhanced operational efficiency—demonstrating that impactful innovation doesn't require large budgets, just creative thinking.</p>
+    </div>
+
+    <div class="card">
+      <h3>📲 Secure, Smart Walk-In Customer Support</h3>
+      <p>Implemented a secure QR-based support system that seamlessly connected in-person customers directly to tailored digital support solutions. This innovative workflow improved data security, streamlined customer experience, and reduced wait times. It set a new standard for operational efficiency and responsiveness in face-to-face support interactions.</p>
+    </div>
+
+    <div class="card">
+      <h3>🤖 Strategic AI Automation Analysis & Implementation</h3>
+      <p>Conducted a comprehensive cost-benefit analysis and strategic evaluation of AI-driven automation solutions within a customer support environment. Clearly defined automation targets, evaluated alternative AI providers, balanced customer experience considerations, and developed a strategic roadmap for long-term efficiency gains and cost savings—delivering meaningful impact from day one.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔧 Customer Support Platform Optimization</h3>
+      <p>Led a strategic overhaul of a Zendesk instance for a growing service-focused organization, designing streamlined workflows, custom automation, and analytics-driven processes. This transformed customer interaction quality, boosted response accuracy, reduced average handling times, and significantly elevated customer satisfaction—demonstrating immediate operational impact.</p>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2025 Sean Hamelman | Built in the Lab 🧪
+  </footer>
+
+  <script>
+    (function trackVisit(){
+      const path = encodeURIComponent(window.location.pathname);
+      const ref = encodeURIComponent(document.referrer || 'direct');
+      const ip = "anon";
+      const img = new Image();
+      img.src = `https://script.google.com/macros/s/AKfycby_4jWW8Pq9KETJfdIYKy8KuJQ31LPuQUT9Lu-NZC9V7IO1Lpm9be7SUtJMPAnJH9ydHQ/exec?path=${path}&ref=${ref}&ip=${ip}`;
+    })();
+  </script>
 
 </body>
 </html>
- 
