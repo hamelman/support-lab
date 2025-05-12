@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Configuration, OpenAIApi } = require("openai");
+const { OpenAI } = require("openai");
 require("dotenv").config(); // Safe to call — has no effect on Netlify
 
 // 🧠 Cosine similarity function
@@ -38,10 +38,11 @@ exports.handler = async function (event, context) {
     }));
 
     // 🔍 Embedding logic
-    const configuration = new Configuration({
-      apiKey: process.env.OPENROUTER_API_KEY,
+    const openai = new OpenAI({
+        apiKey: process.env.OPENROUTER_API_KEY,
+        baseURL: "https://openrouter.ai/api/v1",
     });
-    const openai = new OpenAIApi(configuration);
+
 
     // 1. Embed the user query
     const userEmbeddingRes = await openai.createEmbedding({
