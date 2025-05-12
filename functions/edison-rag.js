@@ -1,5 +1,4 @@
 const axios = require("axios");
-const { OpenAI } = require("openai");
 require("dotenv").config(); // Safe to call — has no effect on Netlify
 
 // 🧠 Cosine similarity function
@@ -37,27 +36,36 @@ exports.handler = async function (event, context) {
       response: row.Response,
     }));
 
-    // 🔍 Embedding logic
-    const openai = new OpenAI({
-        apiKey: process.env.OPENROUTER_API_KEY,
-        baseURL: "https://openrouter.ai/api/v1",
-    });
-
-
     // 1. Embed the user query
-    const userEmbeddingRes = await openai.createEmbedding({
-      model: "text-embedding-ada-002",
-      input: query,
-    });
+    const userEmbeddingRes = await axios.post(
+      "https://openrouter.ai/api/v1/embeddings",
+      {
+        model: "text-embedding-ada-002",
+        input: query,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        },
+      }
+    );
     const userEmbedding = userEmbeddingRes.data.data[0].embedding;
 
     // 2. Embed each keyword set and score
     const scoredPairs = await Promise.all(
       qaPairs.map(async (pair) => {
-        const keywordEmbeddingRes = await openai.createEmbedding({
-          model: "text-embedding-ada-002",
-          input: pair.keywords,
-        });
+        const keywordEmbeddingRes = await axios.post(
+          "https://openrouter.ai/api/v1/embeddings",
+          {
+            model: "text-embedding-ada-002",
+            input: pair.keywords,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            },
+          }
+        );
         const keywordEmbedding = keywordEmbeddingRes.data.data[0].embedding;
         const score = cosineSimilarity(userEmbedding, keywordEmbedding);
         return { ...pair, score };
