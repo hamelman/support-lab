@@ -2,6 +2,14 @@ const axios = require("axios");
 const { Configuration, OpenAIApi } = require("openai");
 require("dotenv").config(); // Safe to call — has no effect on Netlify
 
+// 🧠 Cosine similarity function
+function cosineSimilarity(vecA, vecB) {
+  const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+  const magB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  return dot / (magA * magB);
+}
+
 exports.handler = async function (event, context) {
   try {
     const query = event.queryStringParameters.q;
@@ -29,9 +37,38 @@ exports.handler = async function (event, context) {
       response: row.Response,
     }));
 
+    // 🔍 Embedding logic
+    const configuration = new Configuration({
+      apiKey: process.env.OPENROUTER_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    // 1. Embed the user query
+    const userEmbeddingRes = await openai.createEmbedding({
+      model: "text-embedding-ada-002",
+      input: query,
+    });
+    const userEmbedding = userEmbeddingRes.data.data[0].embedding;
+
+    // 2. Embed each keyword set and score
+    const scoredPairs = await Promise.all(
+      qaPairs.map(async (pair) => {
+        const keywordEmbeddingRes = await openai.createEmbedding({
+          model: "text-embedding-ada-002",
+          input: pair.keywords,
+        });
+        const keywordEmbedding = keywordEmbeddingRes.data.data[0].embedding;
+        const score = cosineSimilarity(userEmbedding, keywordEmbedding);
+        return { ...pair, score };
+      })
+    );
+
+    // 3. Return best match
+    const bestMatch = scoredPairs.sort((a, b) => b.score - a.score)[0];
+
     return {
       statusCode: 200,
-      body: `Loaded ${qaPairs.length} Q&A entries. First: "${qaPairs[0].keywords}" → "${qaPairs[0].response}"`,
+      body: bestMatch.response,
     };
 
   } catch (error) {
