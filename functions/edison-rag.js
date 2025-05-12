@@ -16,9 +16,11 @@ exports.handler = async function (event, context) {
 // Setup Google Sheets access
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID);
 
-await doc.useServiceAccountAuth({
-  client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+await doc.authenticate({
+  credentials: {
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  },
 });
 
 await doc.loadInfo(); // Load sheet info
@@ -37,16 +39,4 @@ return {
   body: `Loaded ${qaPairs.length} Q&A entries. First: "${qaPairs[0].keywords}" → "${qaPairs[0].response}"`,
 };
 
-    // Placeholder until next step
-    return {
-      statusCode: 200,
-      body: `You asked: "${query}". Edison is thinking...`,
-    };
-  } catch (error) {
-    console.error("Edison error:", error);
-    return {
-      statusCode: 500,
-      body: "Something went wrong: " + error.message,
-    };
-  }
-};
+   
