@@ -17,10 +17,12 @@ async function generateEmbeddings() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  for (const row of rows) {
+  let delay = 500; // ms, safe for paid plans
+
+  for (const [index, row] of rows.entries()) {
     try {
       if (row.Embedding && row.Embedding.trim() !== "") {
-        console.log(`⏩ Skipped (already embedded): ${row.Keywords}`);
+        console.log(`⏩ Skipped (${index + 1}/${rows.length}): ${row.Keywords}`);
         continue;
       }
 
@@ -41,22 +43,23 @@ async function generateEmbeddings() {
       row.Embedding = JSON.stringify(embedding);
       await row.save();
 
-      console.log(`✅ Embedded: ${row.Keywords}`);
-      await sleep(4000); // safe delay between requests
+      console.log(`✅ (${index + 1}/${rows.length}) Embedded: ${row.Keywords}`);
+      await sleep(delay);
 
     } catch (err) {
-      console.error(`❌ Failed on: ${row.Keywords}`, err.response?.status || err.message);
+      const status = err.response?.status || err.message;
+      console.error(`❌ Failed on: ${row.Keywords} — ${status}`);
 
       if (err.response?.status === 429) {
-        console.log("⚠️ Rate limited — waiting longer...");
-        await sleep(10000); // back off more on rate limit
+        console.log("⚠️ Rate limited — backing off to 10s...");
+        await sleep(10000); // bigger pause on rate limit
       } else {
-        await sleep(5000); // wait a bit before next attempt anyway
+        await sleep(3000); // pause a little anyway
       }
     }
   }
 
-  console.log("✅ Embedding complete.");
+  console.log("✅ All embeddings generated.");
 }
 
 generateEmbeddings().catch(console.error);
