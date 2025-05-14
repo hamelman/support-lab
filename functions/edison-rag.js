@@ -73,8 +73,21 @@ exports.handler = async function (event, context) {
       })
     );
 
-    // 3️⃣ Return best match
+    // 3️⃣ Determine best match
     const best = scored.sort((a, b) => b.score - a.score)[0];
+
+    // 📝 Log to Queries sheet
+    const logSheet = doc.sheetsByTitle["Queries"];
+    await logSheet.addRow({
+      Timestamp: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
+      Question: query,
+      Response: best.response,
+      Score: best.score.toFixed(2),
+      "Matched Keywords": best.keywords,
+      Referrer: event.headers.referer || "/",
+      IP: event.headers["x-nf-client-connection-ip"] || "anon",
+    });
+
     return {
       statusCode: 200,
       body: best.response,
