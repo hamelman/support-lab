@@ -261,10 +261,10 @@ body.contact .success {
 
 /* Floating beaker button */
 #lab-beaker-btn {
-  background: white;
+  background: transparent;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
   width: 70px; height: 70px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
