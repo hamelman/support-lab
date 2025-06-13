@@ -257,6 +257,9 @@ body.contact .success {
   bottom: 32px;
   right: 32px;
   z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  gap: 18px; /* Space between beaker and chat */
 }
 
 /* Floating beaker button */
@@ -274,12 +277,10 @@ body.contact .success {
 
 /* Chat window */
 #lab-chat-window {
-  position: absolute;
-  bottom: 80px;
-  right: 0;
+  position: static;
   width: 350px;
   max-width: 92vw;
-  background: #fff;
+  background: rgba(255,255,255,0.88);
   border-radius: 20px;
   box-shadow: 0 6px 32px rgba(0,0,0,0.17);
   display: flex;
@@ -291,7 +292,7 @@ body.contact .success {
 
 /* Header */
 .chat-header {
-  background: #F7FAFC;
+  background: rgba(247,250,252,0.92);
   padding: 16px;
   display: flex;
   align-items: center;
@@ -314,7 +315,7 @@ body.contact .success {
   overflow-y: auto;
   max-height: 300px;
   padding: 16px;
-  background: #f7fafc;
+  background: transparent;
   font-size: 1rem;
 }
 
@@ -322,10 +323,29 @@ body.contact .success {
 .chat-input-bar {
   display: flex;
   border-top: 1px solid #eaeaea;
-  background: #fff;
+  background: transparent;
   padding: 12px;
   gap: 8px;
 }
+#lab-chat-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+#lab-send-btn {
+  background: #13a0b2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#lab-send-btn:hover { background: #0c7185; }
+
 #lab-chat-input {
   flex: 1;
   padding: 10px 12px;
