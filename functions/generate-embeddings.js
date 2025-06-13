@@ -1,129 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Support Lab – Sean Hamelman</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="/style.css" />
-</head>
-<body>
+const { GoogleSpreadsheet } = require("google-spreadsheet");
+const axios = require("axios");
+require("dotenv").config();
 
-  <div id="header-placeholder"></div>
-  <script src="/load-header.js"></script>
+async function generateEmbeddings() {
+  const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID);
+  await doc.useServiceAccountAuth({
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  });
 
-  <section class="hero fade-in-up">
-    <h2>Smarter, Kinder, and More Effective Support</h2>
-    <p>I’m Sean, a customer support leader and systems thinker. At Support Lab, I design low-cost, high-impact tools and workflows that scale across global teams—while keeping people at the center.</p>
-  </section>
+  await doc.loadInfo();
+  const sheet = doc.sheetsByTitle["Keywords"];
+  const rows = await sheet.getRows();
 
-  <section class="highlights">
-    <div class="card fade-in-up">
-      <h3>🔍 Zendesk Analytics & Automation</h3>
-      <p>Custom metrics, reports, and triggers that power better decisions and faster resolutions.</p>
-    </div>
-    <div class="card fade-in-up">
-      <h3>🤖 AI Evaluation & Implementation</h3>
-      <p>Cost-benefit analysis, customer experience impact, and realistic automation rollouts.</p>
-    </div>
-    <div class="card fade-in-up">
-      <h3>🌍 Global Team Scheduling</h3>
-      <p>Built-from-scratch live support scheduling tools—no vendor contracts, just results.</p>
-    </div>
-    <div class="card fade-in-up">
-      <h3>🛠 Low/No-Cost Tooling</h3>
-      <p>Custom workflows using Google Sheets, scripts, and APIs to replace expensive SaaS.</p>
-    </div>
-  </section>
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
-  <div class="cta fade-in-up">
-    <a href="case-studies/">Explore My Work →</a>
-  </div>
+  let delay = 500; // ms, safe for paid plans
 
-  <footer>
-    © 2025 Sean Hamelman | Built in the Lab 🧪
-  </footer>
+  for (const [index, row] of rows.entries()) {
+    try {
+      if (row.Embedding && row.Embedding.trim() !== "") {
+        console.log(`⏩ Skipped (${index + 1}/${rows.length}): ${row.Keywords}`);
+        continue;
+      }
 
-  <!-- Support Lab Chat Widget -->
-  <div id="lab-chat-root">
-    <!-- Floating Beaker Button -->
-    <button id="lab-beaker-btn" aria-label="Open chat">
-      <img src="avatar.png" alt="Open Support Lab Chat" />
-    </button>
+      const res = await axios.post(
+        "https://api.openai.com/v1/embeddings",
+        {
+          model: "text-embedding-ada-002",
+          input: row.Keywords,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          },
+        }
+      );
 
-    <!-- Expandable Chat Window -->
-    <div id="lab-chat-window" class="hidden">
-      <div class="chat-header">
-        <img src="avatar.png" alt="Support Lab Beaker" />
-        <span><strong>Edison</strong></span>
-        <button id="lab-close-btn" aria-label="Close chat">&times;</button>
-      </div>
-      <div id="lab-chat-log" class="chat-log"></div>
-      <div class="chat-input-bar">
-        <input type="text" id="lab-chat-input" placeholder="Ask me anything..." autocomplete="off" />
-        <button id="lab-send-btn" type="button">Send</button>
-      </div>
-    </div>
-  </div>
+      const embedding = res.data.data[0].embedding;
+      row.Embedding = JSON.stringify(embedding);
+      await row.save();
 
-  <script src="/reveal.js"></script>
-  <script>
-    // Floating beaker widget open/close
-    document.getElementById('lab-beaker-btn').onclick = () => {
-      document.getElementById('lab-chat-window').classList.remove('hidden');
-      document.getElementById('lab-beaker-btn').style.display = "none";
-      setTimeout(() => document.getElementById('lab-chat-input').focus(), 120);
-    };
-    document.getElementById('lab-close-btn').onclick = () => {
-      document.getElementById('lab-chat-window').classList.add('hidden');
-      document.getElementById('lab-beaker-btn').style.display = "";
-    };
+      console.log(`✅ (${index + 1}/${rows.length}) Embedded: ${row.Keywords}`);
+      await sleep(delay);
 
-    // Edison chat send (Send button or Enter key)
-    async function sendLabChat() {
-      const input = document.getElementById('lab-chat-input');
-      const log = document.getElementById('lab-chat-log');
-      const question = input.value.trim();
-      if (!question) return;
-      // Show user message
-      log.innerHTML += `<div class="user-message"><strong>You:</strong> ${question}</div>`;
-      input.value = "";
-      input.focus();
-      // Show loading
-      log.innerHTML += `<div class="bot-message" id="bot-typing">Edison is thinking<span class="blinking">...</span></div>`;
-      log.scrollTop = log.scrollHeight;
+    } catch (err) {
+      const status = err.response?.status || err.message;
+      console.error(`❌ Failed on: ${row.Keywords} — ${status}`);
 
-      try {
-        const res = await fetch('/.netlify/functions/edison-rag?q=' + encodeURIComponent(question));
-        const reply = await res.text();
-        document.getElementById('bot-typing').remove();
-        log.innerHTML += `<div class="bot-message"><strong>Edison:</strong> ${reply}</div>`;
-        log.scrollTop = log.scrollHeight;
-      } catch (err) {
-        document.getElementById('bot-typing').remove();
-        log.innerHTML += `<div class="bot-message"><strong>Edison:</strong> Sorry, I couldn't answer that right now.</div>`;
-        log.scrollTop = log.scrollHeight;
+      if (err.response?.status === 429) {
+        console.log("⚠️ Rate limited — backing off to 10s...");
+        await sleep(10000); // bigger pause on rate limit
+      } else {
+        await sleep(3000); // pause a little anyway
       }
     }
+  }
 
-    document.getElementById('lab-send-btn').onclick = sendLabChat;
-    document.getElementById('lab-chat-input').addEventListener("keydown", function(e) {
-      if (e.key === "Enter") sendLabChat();
-    });
-  </script>
+  console.log("✅ All embeddings generated.");
+}
 
-  <!-- Page visit tracking -->
-  <script>
-    fetch("/.netlify/functions/log-visit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        path: window.location.pathname,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent
-      })
-    }).catch(err => console.warn("Visit log failed:", err));
-  </script>
-
-</body>
-</html>
+generateEmbeddings().catch(console.error);
