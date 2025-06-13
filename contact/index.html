@@ -67,6 +67,38 @@
     });
   </script>
   <script src="/reveal.js"></script>
+ <div id="lab-chat-root">
+  <button id="lab-beaker-btn" aria-label="Open chat">
+    <img src="logo.png" alt="Open Support Lab Chat" />
+  </button>
+  <div id="lab-chat-window" class="hidden">
+    <div class="chat-header">
+      <img src="logo.png" alt="Support Lab Bot" />
+      <strong>Edison</strong>
+      <button id="lab-close-btn" title="Close">×</button>
+    </div>
+    <div class="chat-log" id="lab-chat-log"></div>
+    <form class="chat-input-bar" onsubmit="return false;">
+      <input type="text" id="lab-chat-input" autocomplete="off" placeholder="Ask me anything..." />
+      <button id="lab-send-btn" aria-label="Send">Send</button>
+    </form>
+    <button id="lab-scroll-btn" style="display:none; position: absolute; right: 20px; bottom: 70px;">↓</button>
+  </div>
+</div>
+
+  <script>
+  // Open chat
+  document.getElementById('lab-beaker-btn').onclick = () => {
+    document.getElementById('lab-chat-window').classList.remove('hidden');
+    document.getElementById('lab-beaker-btn').style.display = "none";
+    setTimeout(() => document.getElementById('lab-chat-input').focus(), 120);
+  };
+  // Close chat
+  document.getElementById('lab-close-btn').onclick = () => {
+    document.getElementById('lab-chat-window').classList.add('hidden');
+    document.getElementById('lab-beaker-btn').style.display = "";
+  };
+</script>
 
 </body>
 </html>
